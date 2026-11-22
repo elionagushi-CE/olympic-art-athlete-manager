@@ -6,7 +6,7 @@ Built as my final project for the *Interactive Web Programming* course in the We
 
 ![Home page](docs/screenshots/home-hero.png)
 
-> **Live demo:** *add the GitHub Pages link here once it is enabled (see "Run it" below)*
+> **Live demo:** [elionagushi-ce.github.io/olympic-art-athlete-manager](https://elionagushi-ce.github.io/olympic-art-athlete-manager/)
 
 ---
 
