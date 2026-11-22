@@ -19,6 +19,9 @@
 
 /* ===================== 1. VARIABLES AND BASE ============================ */
 
+/* Keep the HTML hidden attribute working even if Bootstrap fails to load */
+[hidden] { display: none !important; }
+
 :root {
   /* Official club colours */
   --navy: #00093f;

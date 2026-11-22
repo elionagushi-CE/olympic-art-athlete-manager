@@ -72,6 +72,7 @@
 
         <!-- Success message shown by JavaScript after a valid submit -->
         <div class="alert alert-success oa-alert" id="formSuccess" role="status" hidden></div>
+        <div class="alert alert-danger oa-alert" id="formSaveError" role="alert" hidden></div>
 
         <!-- novalidate turns off the browser's own bubbles so my JavaScript does the checking -->
         <form id="athleteForm" class="athlete-form" novalidate>
@@ -79,43 +80,43 @@
 
             <div class="col-12 col-md-6">
               <label class="form-label" for="firstName">First name <span class="req">*</span></label>
-              <input type="text" class="form-control" id="firstName" name="firstName"
+              <input type="text" class="form-control" id="firstName" aria-describedby="firstNameError" name="firstName"
                      placeholder="Elion" autocomplete="given-name">
               <p class="field-error" id="firstNameError" hidden></p>
             </div>
 
             <div class="col-12 col-md-6">
               <label class="form-label" for="lastName">Last name <span class="req">*</span></label>
-              <input type="text" class="form-control" id="lastName" name="lastName"
+              <input type="text" class="form-control" id="lastName" aria-describedby="lastNameError" name="lastName"
                      placeholder="Krasniqi" autocomplete="family-name">
               <p class="field-error" id="lastNameError" hidden></p>
             </div>
 
             <div class="col-12 col-md-6">
               <label class="form-label" for="birthDate">Date of birth <span class="req">*</span></label>
-              <input type="date" class="form-control" id="birthDate" name="birthDate">
-              <p class="field-hint">Age is calculated automatically from this date.</p>
+              <input type="date" class="form-control" id="birthDate" aria-describedby="birthDateHint birthDateError" name="birthDate">
+              <p class="field-hint" id="birthDateHint">Age is calculated automatically from this date.</p>
               <p class="field-error" id="birthDateError" hidden></p>
             </div>
 
             <div class="col-12 col-md-6">
               <label class="form-label" for="phone">Phone number <span class="req">*</span></label>
-              <input type="tel" class="form-control" id="phone" name="phone"
+              <input type="tel" class="form-control" id="phone" aria-describedby="phoneHint phoneError" name="phone"
                      placeholder="+383 44 123 456" autocomplete="tel">
-              <p class="field-hint">Digits, spaces, dashes and a leading + are allowed.</p>
+              <p class="field-hint" id="phoneHint">Digits, spaces, dashes and a leading + are allowed.</p>
               <p class="field-error" id="phoneError" hidden></p>
             </div>
 
             <div class="col-12 col-md-6">
               <label class="form-label" for="email">Email <span class="req">*</span></label>
-              <input type="email" class="form-control" id="email" name="email"
+              <input type="email" class="form-control" id="email" aria-describedby="emailError" name="email"
                      placeholder="athlete@example.com" autocomplete="email">
               <p class="field-error" id="emailError" hidden></p>
             </div>
 
             <div class="col-12 col-md-6">
               <label class="form-label" for="team">Category <span class="req">*</span></label>
-              <select class="form-select" id="team" name="team">
+              <select class="form-select" id="team" aria-describedby="teamError" name="team">
                 <option value="">Choose a category</option>
                 <option value="Cadets">Cadets</option>
                 <option value="Juniors">Juniors</option>
@@ -127,7 +128,7 @@
 
             <div class="col-12 col-md-4">
               <label class="form-label" for="position">Role in the group <span class="req">*</span></label>
-              <select class="form-select" id="position" name="position">
+              <select class="form-select" id="position" aria-describedby="positionError" name="position">
                 <option value="">Choose a role</option>
                 <option value="Competitor">Competitor</option>
                 <option value="Team captain">Team captain</option>
@@ -140,7 +141,7 @@
 
             <div class="col-12 col-md-4">
               <label class="form-label" for="belt">Belt level <span class="req">*</span></label>
-              <select class="form-select" id="belt" name="belt">
+              <select class="form-select" id="belt" aria-describedby="beltError" name="belt">
                 <option value="">Choose a belt</option>
                 <option value="White">White</option>
                 <option value="Yellow">Yellow</option>
@@ -154,7 +155,7 @@
 
             <div class="col-12 col-md-4">
               <label class="form-label" for="status">Status <span class="req">*</span></label>
-              <select class="form-select" id="status" name="status">
+              <select class="form-select" id="status" aria-describedby="statusError" name="status">
                 <option value="Active">Active</option>
                 <option value="Inactive">Inactive</option>
               </select>

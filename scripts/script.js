@@ -38,9 +38,20 @@ function createEl(tag, className, text) {
   return element;
 }
 
+/**
+ * Turns "yyyy-mm-dd" into a Date at local midnight.
+ * new Date("2004-05-18") is read as UTC midnight, which is still 17 May in
+ * time zones west of UTC (e.g. New York), so dates and ages could be off by a day.
+ */
+function parseLocalDate(dateString) {
+  const parts = String(dateString).split("-").map(Number);
+  if (parts.length !== 3 || parts.some(isNaN)) return new Date(NaN);
+  return new Date(parts[0], parts[1] - 1, parts[2]);
+}
+
 /** Calculates the age in full years from a date of birth (yyyy-mm-dd). */
 function calculateAge(birthDate) {
-  const birth = new Date(birthDate);
+  const birth = parseLocalDate(birthDate);
   const today = new Date();
 
   let age = today.getFullYear() - birth.getFullYear();
@@ -55,7 +66,7 @@ function calculateAge(birthDate) {
 
 /** Turns 2026-03-14 into 14.03.2026 for display. */
 function formatDate(dateString) {
-  const date = new Date(dateString);
+  const date = parseLocalDate(dateString);
   const day = String(date.getDate()).padStart(2, "0");
   const month = String(date.getMonth() + 1).padStart(2, "0");
   return day + "." + month + "." + date.getFullYear();
@@ -419,7 +430,7 @@ function validateName(value, label) {
 function validateBirthDate(value) {
   if (value === "") return "Date of birth is required.";
 
-  const birth = new Date(value);
+  const birth = parseLocalDate(value);
   if (isNaN(birth.getTime())) return "Please enter a valid date.";
   if (birth > new Date()) return "The date of birth cannot be in the future.";
 
@@ -518,6 +529,14 @@ function showSuccessMessage(text) {
   }, 5000);
 }
 
+/** Shows a red message above the form when saving to Local Storage fails. */
+function showSaveError(text) {
+  const box = $("#formSaveError");
+  $("#formSuccess").hidden = true;           // never show "saved" and "not saved" together
+  box.textContent = text;
+  box.hidden = false;
+}
+
 /** Runs when the form is submitted. */
 function handleFormSubmit(event) {
   event.preventDefault();                    // stop the page from reloading
@@ -538,11 +557,18 @@ function handleFormSubmit(event) {
 
   const athletes = getAthletes();
   athletes.push(newAthlete);
-  saveAthletes(athletes);                    // Local Storage is updated here
 
-  $("#athleteForm").reset();                 // clear the form
+  // Local Storage is updated here. It can fail (storage full, or blocked in
+  // some private-browsing modes), so only report success if it really saved.
+  if (!saveAthletes(athletes)) {
+    showSaveError("The athlete could not be saved: your browser blocked Local Storage or it is full.");
+    return;
+  }
+
+  $("#athleteForm").reset();                // clear the form
   $("#status").value = "Active";             // sensible default after reset
 
+  $("#formSaveError").hidden = true;
   renderAthleteList();                       // update the roster
   showSuccessMessage(
     newAthlete.firstName + " " + newAthlete.lastName +
@@ -580,7 +606,10 @@ function deleteAthlete(athleteId) {
     return athlete.id !== athleteId;
   });
 
-  saveAthletes(remaining);
+  if (!saveAthletes(remaining)) {
+    showSaveError("The athlete could not be removed: your browser blocked Local Storage.");
+    return;
+  }
   renderAthleteList();                       // the card disappears from the DOM
   athleteIdToDelete = null;
 }
@@ -739,6 +768,7 @@ function initAthletesPage() {
     ["firstName", "lastName", "birthDate", "phone", "email",
      "team", "position", "belt", "status"].forEach(clearFieldError);
     $("#formSuccess").hidden = true;
+    $("#formSaveError").hidden = true;
   });
 
   // While the user corrects a field, its error message disappears.
