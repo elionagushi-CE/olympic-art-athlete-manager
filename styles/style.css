@@ -482,6 +482,7 @@ textarea:focus-visible {
   display: flex;                      /* flexbox inside each card */
   flex-direction: column;
   background-color: var(--white);
+  color: var(--ink);                  /* own text colour, so cards stay readable inside dark sections */
   border: 1px solid var(--line);
   border-top: 4px solid var(--gold);
   border-radius: var(--radius);
